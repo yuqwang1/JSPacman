@@ -8,7 +8,7 @@ let ghostImg, pacImg, cherryImg;
 
 
 class Tile {
-  constructor (x, y, type) {
+  constructor (x, y, type, ghost_id) {
     this.x = x;
     this.y = y;
     this.type = type;
@@ -17,6 +17,7 @@ class Tile {
     this.toY = 0;
     this.speed = 0.2;
     this.overlap = true;
+    this.ghost_id = ghost_id;
   }
 
 
@@ -102,6 +103,9 @@ class Tile {
   }
 
   updateTile () {
+    if (!this.overlap){
+      return;
+    }
     if (this.moving) {
       this.x = lerp(this.x, this.toX, this.speed);
       this.y = lerp(this.y, this.toY, this.speed);
@@ -126,38 +130,66 @@ class Tile {
           score += 10;
           tile.overlap = false;
           break;
-          case 'GHOST' :
-          winGame(false);
-          break;
-
      }
     }
   } else if (this.type === 'GHOST'){
-
+    let dist_ghost_pac = dist(pacman.x, pacman.y, this.x, this.y);
+    if (dist_ghost_pac < 0.3) {
+      return winGame(false);
+    }
+    if (this.moving){
+      return;
+    }
+    let possibleMoves = [
+      getTile(this.x - 1, this.y),
+      getTile(this.x + 1, this.y),
+      getTile(this.x, this.y - 1),
+      getTile(this.x, this.y + 1),
+    ]
+    possibleMoves.sort(function (a, b) {
+      let aDist = dist(a.x, a.y, pacman.x, pacman.y);
+      let bDist = dist(b.x, b.y, pacman.x, pacman.y);
+      return aDist - bDist;
+    })
+    let index = Math.floor(random(3.99));
+    this.move(possibleMoves[index].x, possibleMoves[index].y, false);
   }
   if (score === 391) {
     winGame(true);
   }
+
 }
 
 
-  move (x, y) {
+  move (x, y, relative) {
+    let endX, endY;
+    if (relative) {
+      endX = this.x + x;
+      endY = this.y + y;
+    } else {
+      endX = x;
+      endY = y;
+    }
+
     if (this.moving) {
+      return false;
+    }
+    let toTile = getTile(endX, endY);
+    if (!toTile){
       return;
     }
-    this.toX = this.x + x;
-    this.toY = this.y + y;
-    let toTile = getTile(this.toX, this.toY);
     // debugger
     // console.log(`${index}`)
     // console.log(`${toTile}`)
     let toTileType = toTile.type;
     if ((toTileType === 'WALL' && this.type != 'WALL') || (toTileType === 'GHOST' && this.type === 'GHOST')) {
       // console.log("you can not move");
-      return;
+      return false;
     }
     this.moving = true;
-
+    this.toX = endX,
+    this.toY = endY;
+    return true
   }
 }
 
