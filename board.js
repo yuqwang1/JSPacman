@@ -83,18 +83,19 @@ function winGame(won) {
 
 
 function generateField () {
+  let ghost_id = 0;
   for (let i = 0; i < MAP.length; i++) {
     let row = MAP[i].split(',')
     for (let j = 0; j < row.length; j++) {
     let type = parseTileType(row[j]);
-    let tile = new Tile(j,i,type);
+    let tile = new Tile(j,i,type, -1);
 
-     if (type === 'PACMAN') {
-       pacman = tile;
-     } else if (type === 'GHOST') {
-       ghosts.push(tile);
-     }
-       field.push(tile);
+    if (type === 'PACMAN') {
+      pacman = tile;
+    } else if (type === 'GHOST') {
+      ghosts.push(new Tile(j, i, 'GHOST', 1));
+    }
+    field.push(tile);
     }
   }
    return field;

@@ -151,8 +151,15 @@ class Tile {
       let bDist = dist(b.x, b.y, pacman.x, pacman.y);
       return aDist - bDist;
     })
-    let index = Math.floor(random(3.99));
-    this.move(possibleMoves[index].x, possibleMoves[index].y, false);
+    // if (this.ghost_id == 0 && this.ghost_id == 1) {
+      for (let i = 0; i < possibleMoves.length; i++) {
+          if (this.move(possibleMoves[i].x, possibleMoves[i].y, false)) {
+          break;
+        }
+      }
+    // }
+    // let index = Math.floor(random(3.99));
+    // this.move(possibleMoves[index].x, possibleMoves[index].y, false);
   }
   if (score === 391) {
     winGame(true);
