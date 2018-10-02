@@ -51,7 +51,7 @@ class Tile {
         break;
       case "GHOST":
         // ghostImg = createImg('./img/ghost_r1.png');
-        // ghostImg.position(10,10);
+        // ghostImg.position(－10000,－10000);
         // image(ghostImg, tileLength, tileHeight, TILE_SIZE * 4 / 5, TILE_SIZE * 4 / 5);
         fill("#FF00EE");
         stroke(0);
@@ -65,28 +65,28 @@ class Tile {
         break;
       case "PACMAN":
         // image(pacImg, tileLength, tileHeight, TILE_SIZE * 4 / 5, TILE_SIZE * 4 / 5)
-      // if (keyIsDown(UP_ARROW)) {
-      //     pacImg = createImg('./img/pacman_up.png');
-      //     pacImg.position(-1000,-1000);
-      //     image(pacImg, tileLength, tileHeight, TILE_SIZE * 4 / 5, TILE_SIZE * 4 / 5);
-      //   } else if (keyIsDown(DOWN_ARROW)) {
-      //     pacImg = createImg('./img/pacman_down.png');
-      //     pacImg.position(-1000,-1000);
-      //     image(pacImg, tileLength, tileHeight, TILE_SIZE * 4 / 5, TILE_SIZE * 4 / 5);
-      //   } else if (keyIsDown(LEFT_ARROW)) {
-      //     pacImg = createImg('./img/pacman_left.png');
-      //     pacImg.position(-1000,-1000);
-      //     image(pacImg, tileLength, tileHeight, TILE_SIZE * 4 / 5, TILE_SIZE * 4 / 5);
-      //   } else if (keyIsDown(RIGHT_ARROW)) {
-      //     pacImg = createImg('./img/pacman_right.png');
-      //     pacImg.position(-1000,-1000);
-      //     image(pacImg, tileLength, tileHeight, TILE_SIZE * 4 / 5, TILE_SIZE * 4 / 5);
-      // } else {
+      if (keyIsDown(UP_ARROW)) {
+          pacImg = createImg('./img/pacman_up.png');
+          pacImg.position(-1000,-1000);
+          image(pacImg, tileLength, tileHeight, TILE_SIZE * 4 / 5, TILE_SIZE * 4 / 5);
+        } else if (keyIsDown(DOWN_ARROW)) {
+          pacImg = createImg('./img/pacman_down.png');
+          pacImg.position(-1000,-1000);
+          image(pacImg, tileLength, tileHeight, TILE_SIZE * 4 / 5, TILE_SIZE * 4 / 5);
+        } else if (keyIsDown(LEFT_ARROW)) {
+          pacImg = createImg('./img/pacman_left.png');
+          pacImg.position(-1000,-1000);
+          image(pacImg, tileLength, tileHeight, TILE_SIZE * 4 / 5, TILE_SIZE * 4 / 5);
+        } else if (keyIsDown(RIGHT_ARROW)) {
+          pacImg = createImg('./img/pacman_right.png');
+          pacImg.position(-1000,-1000);
+          image(pacImg, tileLength, tileHeight, TILE_SIZE * 4 / 5, TILE_SIZE * 4 / 5);
+      } else {
         fill('#FFFF00');
         noStroke();
         ellipse(tileLength + TILE_SIZE / 2.5, tileHeight + TILE_SIZE / 2.5, TILE_SIZE /10 * 8);
         fill(51);
-      // }
+      }
 
 
 
@@ -134,6 +134,9 @@ class Tile {
     }
   } else if (this.type === 'GHOST'){
 
+  }
+  if (score === 391) {
+    winGame(true);
   }
 }
 

@@ -72,11 +72,12 @@ function draw () {
 
 function winGame(won) {
   if (won) {
-    text("Congradulation! You win")
+    text("Congradulation! You win", width / 3, height / 2)
   } else {
     text("Your lose! Please try again ", width / 3, height / 2)
   }
-  text("Press enter to restart")
+  text("Press enter to restart", width /3, height / 2 + 50)
+  noLoop();
 }
 
 
