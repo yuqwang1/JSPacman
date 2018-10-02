@@ -52,7 +52,7 @@ class Tile {
         break;
       case "GHOST":
         // ghostImg = createImg('./img/ghost_r1.png');
-        // ghostImg.position(－10000,－10000);
+        // ghostImg.position(-10000,-1000);
         // image(ghostImg, tileLength, tileHeight, TILE_SIZE * 4 / 5, TILE_SIZE * 4 / 5);
         fill("#FF00EE");
         stroke(0);
@@ -146,18 +146,34 @@ class Tile {
       getTile(this.x, this.y - 1),
       getTile(this.x, this.y + 1),
     ]
-    possibleMoves.sort(function (a, b) {
+    let possibleMovesResult = [];
+    for (let i = 0; i < 4; i++) {
+      if (possibleMoves[i].type !== 'WALL') {
+        possibleMovesResult.push(possibleMoves[i]);
+      }
+    }
+
+    possibleMovesResult.sort(function (a, b) {
       let aDist = dist(a.x, a.y, pacman.x, pacman.y);
       let bDist = dist(b.x, b.y, pacman.x, pacman.y);
       return aDist - bDist;
     })
-    // if (this.ghost_id == 0 && this.ghost_id == 1) {
-      for (let i = 0; i < possibleMoves.length; i++) {
-          if (this.move(possibleMoves[i].x, possibleMoves[i].y, false)) {
-          break;
-        }
-      }
-    // }
+    // console.log("hello1");
+    if (this.ghost_id === 0 || this.ghost_id === 1) {
+      // console.log("hello2");
+      this.move(possibleMovesResult[0].x, possibleMovesResult[0].y, false);
+
+      // for (let i = 0; i < possibleMovesResult.length; i++) {
+          // if ()) {
+        //   break;
+        // }
+      // }
+    } else {
+      // console.log("hello3");
+      // return;
+      var index = Math.floor(random(possibleMovesResult.length));
+      this.move(possibleMovesResult[index].x, possibleMovesResult[index].y, false);
+    }
     // let index = Math.floor(random(3.99));
     // this.move(possibleMoves[index].x, possibleMoves[index].y, false);
   }
@@ -181,6 +197,7 @@ class Tile {
     if (this.moving) {
       return false;
     }
+
     let toTile = getTile(endX, endY);
     if (!toTile){
       return;
@@ -220,4 +237,6 @@ function parseTileType(n) {
   function getTile(x, y) {
     let index =y * XDIMENSION + x
     return result = field[index];
+
+
   }

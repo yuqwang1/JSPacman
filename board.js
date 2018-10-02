@@ -18,7 +18,7 @@ let MAP = [
   '0,0,0,1,0,0,0,0,0,1,0,3,4,3,4,3,3,0,1,0,0,0,0,0,1,0,0,0',
   '0,1,1,1,1,1,1,1,1,1,0,3,4,3,4,3,3,0,1,1,1,1,1,1,1,1,1,0',
   '0,0,0,1,0,0,1,0,0,1,0,3,3,3,3,3,3,0,1,0,0,1,0,0,1,0,0,0',
-  '0,0,0,1,0,0,1,0,0,1,0,0,3,0,3,0,0,0,1,0,0,2,0,0,1,0,0,0',
+  '0,0,0,1,0,0,1,0,0,1,0,0,3,3,3,0,0,0,1,0,0,2,0,0,1,0,0,0',
   '0,1,1,1,0,0,1,0,0,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,1,1,1,0',
   '0,1,0,0,0,0,1,0,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0',
   '0,1,0,0,0,0,1,0,0,0,0,0,2,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0',
@@ -88,14 +88,18 @@ function generateField () {
     let row = MAP[i].split(',')
     for (let j = 0; j < row.length; j++) {
     let type = parseTileType(row[j]);
-    let tile = new Tile(j,i,type, -1);
-
+    let tile = new Tile(j,i,type, null);
+    let empty_tile = new Tile(j, i, 'EMPTY', null);
     if (type === 'PACMAN') {
       pacman = tile;
+      field.push(empty_tile)
     } else if (type === 'GHOST') {
-      ghosts.push(new Tile(j, i, 'GHOST', 1));
-    }
-    field.push(tile);
+      field.push(new Tile(j, i, 'GHOST', ghost_id));
+      // field.push(empty_tile);
+      ghost_id++;
+    } else if (type === 'WALL' || type === 'EMPTY' || type === 'REWARD' || type === 'COOKIE') {
+      field.push(tile);
+      }
     }
   }
    return field;
