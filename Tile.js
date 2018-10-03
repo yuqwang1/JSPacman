@@ -18,6 +18,8 @@ class Tile {
     this.speed = 0.2;
     this.overlap = true;
     this.ghost_id = ghost_id;
+    this.last_move = [[0,0]];
+    this.direction = '';
   }
 
 
@@ -146,23 +148,29 @@ class Tile {
       getTile(this.x, this.y - 1),
       getTile(this.x, this.y + 1),
     ]
+
     let possibleMovesResult = [];
+
     for (let i = 0; i < 4; i++) {
-      if (possibleMoves[i].type !== 'WALL') {
+      if (possibleMoves[i].type !== 'WALL' && possibleMoves[i] !== this.last_move[this.last_move.length - 1]) {
         possibleMovesResult.push(possibleMoves[i]);
       }
     }
+    if(possibleMovesResult.length === 0) {
 
+    }
+    // debugger
+    //
     possibleMovesResult.sort(function (a, b) {
       let aDist = dist(a.x, a.y, pacman.x, pacman.y);
       let bDist = dist(b.x, b.y, pacman.x, pacman.y);
       return aDist - bDist;
     })
     // console.log("hello1");
-    if (this.ghost_id === 0 || this.ghost_id === 1) {
+    if (this.ghost_id === 0) {
       // console.log("hello2");
       this.move(possibleMovesResult[0].x, possibleMovesResult[0].y, false);
-
+      this.last_move.push(possibleMovesResult[0]);
       // for (let i = 0; i < possibleMovesResult.length; i++) {
           // if ()) {
         //   break;
@@ -171,9 +179,11 @@ class Tile {
     } else {
       // console.log("hello3");
       // return;
-      var index = Math.floor(random(possibleMovesResult.length));
+      let index = Math.floor(random(possibleMovesResult.length));
       this.move(possibleMovesResult[index].x, possibleMovesResult[index].y, false);
+      this.last_move.push(possibleMovesResult[index]);
     }
+
     // let index = Math.floor(random(3.99));
     // this.move(possibleMoves[index].x, possibleMoves[index].y, false);
   }

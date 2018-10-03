@@ -1,3 +1,16 @@
+class Pacman {
+  constructor(x, y, type) {
+    this.x = x;
+    this.y = y;
+    this.type = type;
+  }
+}
+
+
+
+
+
+
 function handlePacman () {
   if (keyIsDown(UP_ARROW)) {
   return pacman.move(0, - 1, true)
