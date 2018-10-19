@@ -18,8 +18,9 @@ class Tile {
     this.speed = 0.2;
     this.overlap = true;
     this.ghost_id = ghost_id;
-    this.last_move = [[0,0]];
+    this.last_move = [[0]];
     this.direction = '';
+    // this.pacman = new Pacman(13, 23, 'Pacman')
   }
 
 
@@ -117,10 +118,12 @@ class Tile {
         this.moving = false;
       }
     }
+    // let pacman = new Pacman(14,24,'Pacman')
     if (this.type === 'PACMAN') {
-      let tileX = Math.floor(this.x);
-      let tileY = Math.floor(this.y);
-      let tile = getTile(tileX, tileY);
+      // debugger
+      // let tileX = Math.floor(this.x);
+      // let tileY = Math.floor(this.y);
+      let tile = getTile(this.toX, this.toY);
       let tileType = tile.type;
       if (tile.overlap) {
         switch (tileType) {
@@ -132,9 +135,34 @@ class Tile {
           score += 10;
           tile.overlap = false;
           break;
-     }
-    }
+        }
+        // if (this.toX === 27 && this.toY === 14) {
+        //   this.toX = 28;
+        //   this.toY = 14;
+
+          // let tileStart = getTile(this.toX, this.toY);
+          // let tileEnd = getTile(this.x, this.y);
+          // tileStart.type = 'EMPTY';
+          // tileEnd.type = 'Pacman';
+        // } else if (this.toX === 28 && this.toY === 14) {
+        //   this.toX = 0;
+        //   this.toY = 14;
+        //   this.move = false;
+        }
+        // else if (this.toX === 0 && this.toY === 14) {
+        //   this.toX-- ;
+        // }
+        // else if (this.toX === -1 && this.toY === 14) {
+        //   this.toX = 27;
+        //   this.toY = 14;
+        //   this.moving = false;
+        // }
+      // }
+      // }
+
+      // this.pacman.updatePacman();
   } else if (this.type === 'GHOST'){
+
     let dist_ghost_pac = dist(pacman.x, pacman.y, this.x, this.y);
     if (dist_ghost_pac < 0.3) {
       return winGame(false);
@@ -152,7 +180,8 @@ class Tile {
     let possibleMovesResult = [];
 
     for (let i = 0; i < 4; i++) {
-      if (possibleMoves[i].type !== 'WALL' && possibleMoves[i] !== this.last_move[this.last_move.length - 1]) {
+      // debugger
+      if (possibleMoves[i].type !== 'WALL' && this.last_move[this.last_move.length - 1]) {
         possibleMovesResult.push(possibleMoves[i]);
       }
     }
@@ -161,33 +190,56 @@ class Tile {
     }
     // debugger
     //
-    possibleMovesResult.sort(function (a, b) {
+    let ghost0 = possibleMovesResult.sort(function (a, b) {
       let aDist = dist(a.x, a.y, pacman.x, pacman.y);
       let bDist = dist(b.x, b.y, pacman.x, pacman.y);
       return aDist - bDist;
     })
-    // console.log("hello1");
-    if (this.ghost_id === 0) {
-      // console.log("hello2");
-      this.move(possibleMovesResult[0].x, possibleMovesResult[0].y, false);
-      this.last_move.push(possibleMovesResult[0]);
+
+    let ghost1 = possibleMovesResult.sort(function (a, b) {
+      let aDist = dist(a.x, a.y, pacman.x, pacman.y - 5);
+      let bDist = dist(b.x, b.y, pacman.x, pacman.y - 5);
+      return aDist - bDist;
+    })
+
+    let ghost2 = possibleMovesResult.sort(function (a, b) {
+      let aDist = dist(a.x, a.y, pacman.x + 3, pacman.y + 3 );
+      let bDist = dist(b.x, b.y, pacman.x , pacman.y);
+      return aDist - bDist;
+    })
+    if (this.ghost_id === 0 || this.ghost_id === 1) {
+      // return;
+      this.move(ghost0[0].x, ghost0[0].y, false);
+      this.last_move.push(ghost0[0]);
+      // this.last_move.push(possibleMovesResult[0]);
       // for (let i = 0; i < possibleMovesResult.length; i++) {
           // if ()) {
         //   break;
         // }
       // }
+    // } else if (this.ghost_id === 1) {
+    //   // return;
+    //   this.move(ghost1[0].x, ghost1[0].y, false);
+    //   this.last_move.push(possibleMovesResult[0]);
+    //   // return;
+    // } else if (this.ghost_id === 2) {
+    //   // debugger
+    //   // return;
+    //   this.move(ghost2[0].x, ghost2[0].y, false);
+    //   this.last_move.push(possibleMovesResult[0]);
     } else {
-      // console.log("hello3");
       // return;
       let index = Math.floor(random(possibleMovesResult.length));
       this.move(possibleMovesResult[index].x, possibleMovesResult[index].y, false);
       this.last_move.push(possibleMovesResult[index]);
+      // this.last_move.push(possibleMovesResult[index]);
     }
-
     // let index = Math.floor(random(3.99));
+
     // this.move(possibleMoves[index].x, possibleMoves[index].y, false);
   }
   if (score === 391) {
+    // 391
     winGame(true);
   }
 
@@ -225,6 +277,23 @@ class Tile {
     this.toY = endY;
     return true
   }
+
+  // cross(x, y) {
+  //   if (this.toX === 27 && this.toY === 14) {
+  //     this.x = 0;
+  //     this.y = 14;
+  //     let tileStart = getTile(this.toX, this.toY);
+  //     let tileEnd = getTile(this.x, this.y);
+  //     tileStart.type = 'EMPTY';
+  //     tileEnd.type = 'Pacman';
+      // console.log(`${tile}`)
+      // this.type = 'Pacman';
+    // } else if (this.toX === 0 && this.toY === 14) {
+    //   this.x = 27;
+    //   this.y = 14;
+      // this.type = 'Pacman';
+//     }
+//   }
 }
 
 function parseTileType(n) {
@@ -245,8 +314,7 @@ function parseTileType(n) {
   }
 
   function getTile(x, y) {
-    let index =y * XDIMENSION + x
+    let index =y * XDIMENSION + x;
     return result = field[index];
 
-
-  }
+}
